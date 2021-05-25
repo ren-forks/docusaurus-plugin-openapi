@@ -30,17 +30,17 @@ function Row({ name, schema, required }) {
       <td>
         <code>{name}</code>
         <span style={{ opacity: "0.6" }}> {getSchemaName(schema)}</span>
-        {required && (
+        {!required && (
           <>
             {<span style={{ opacity: "0.6" }}> — </span>}
             <strong
               style={{
                 fontSize: "var(--ifm-code-font-size)",
-                color: "var(--openapi-required)",
+                color: "var(--openapi-code-blue)",
               }}
             >
               {" "}
-              REQUIRED
+              OPTIONAL
             </strong>
           </>
         )}
@@ -139,30 +139,41 @@ function RowsRoot({ schema }) {
 }
 
 function RequestBodyTable({ body, title }) {
-  if (body === undefined || body.content === undefined) {
+  if (body === undefined) {
     return null;
   }
+
+  console.log(body);
 
   // NOTE: We just pick a random content-type.
   // How common is it to have multiple?
 
   const randomFirstKey = Object.keys(body.content)[0];
 
-  const firstBody = body.content[randomFirstKey].schema;
+  let firstBody = body.content[randomFirstKey].schema;
 
   // we don't show the table if there is no properties to show
   if (Object.keys(firstBody.properties || {}).length === 0) {
     return null;
   }
 
+  if (firstBody.properties.params) {
+    firstBody = firstBody.properties.params;
+  }
+
+  if (firstBody.properties.result) {
+    firstBody = firstBody.properties.result;
+  }
+
   return (
     <>
+      <h3>Request</h3>
       <table style={{ display: "table" }}>
         <thead>
           <tr>
             <th style={{ textAlign: "left" }}>
               {title + " "}
-              {body.required && (
+              {/* {body.required && (
                 <>
                   {
                     <span style={{ opacity: "0.6", fontWeight: "normal" }}>
@@ -180,7 +191,7 @@ function RequestBodyTable({ body, title }) {
                     REQUIRED
                   </strong>
                 </>
-              )}
+              )} */}
               <div style={{ fontWeight: "normal" }}>
                 <MD
                   className="table-markdown"
@@ -193,6 +204,13 @@ function RequestBodyTable({ body, title }) {
         </thead>
         <tbody>
           <RowsRoot schema={firstBody} />
+          {Object.keys(firstBody.properties).length === 0 ? (
+            <tr>
+              <td>No parameters.</td>
+            </tr>
+          ) : (
+            ""
+          )}
         </tbody>
       </table>
     </>

@@ -76,10 +76,18 @@ export const sampleFromSchema = (schema: Schema = {}): any => {
 };
 
 function primitive(schema: Schema = {}) {
-  let { type, format } = schema;
+  let { type, const: constantValue, default: defaultValue, format } = schema;
 
   if (type === undefined) {
     return;
+  }
+
+  if (constantValue !== undefined) {
+    return constantValue;
+  }
+
+  if (defaultValue !== undefined) {
+    return defaultValue;
   }
 
   let fn = primitives[type].default;

@@ -30,6 +30,7 @@ export interface Schema {
   additionalProperties?: any;
   enum?: any;
   default?: any;
+  const?: any;
   deprecated?: boolean;
 
   properties?: Schema;

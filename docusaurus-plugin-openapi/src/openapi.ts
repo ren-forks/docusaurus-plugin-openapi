@@ -42,12 +42,12 @@ function getPaths(spec: OpenApiObject): ApiItem[] {
           let operationObject = val as OperationObject;
 
           const summary =
-            operationObject.summary ??
-            operationObject.operationId ??
+            operationObject.summary ||
+            operationObject.operationId ||
             "Missing summary";
-          if (operationObject.description === undefined) {
+          if (!operationObject.description) {
             operationObject.description =
-              operationObject.summary ?? operationObject.operationId ?? "";
+              operationObject.summary || operationObject.operationId;
           }
 
           const baseId = kebabCase(summary);

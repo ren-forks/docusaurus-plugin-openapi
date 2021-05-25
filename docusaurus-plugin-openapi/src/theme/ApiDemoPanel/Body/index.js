@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import VSCode from "./../VSCode";
 import FormTextInput from "./../FormTextInput";
 import FormFileUpload from "./../FormFileUpload";
@@ -140,7 +140,7 @@ function Body() {
       <FormItem label="Body">
         <div
           style={{
-            marginTop: "calc(var(--ifm-pre-padding) / 2)",
+            // marginTop: "calc(var(--ifm-pre-padding) / 2)",
             borderRadius: "4px",
             padding: "var(--ifm-pre-padding)",
             border: "1px solid var(--openapi-monaco-border-color)",
@@ -208,10 +208,21 @@ function Body() {
 
   let language = "plaintext";
   let exampleBodyString = ""; //"body content";
+  let exampleBodyStringTemplate = ""; //"body content";
+  const templateKey = "_DOCUSAURUS_OPEN_API_TEMPLATE_KEY_";
 
   if (contentType === "application/json") {
     if (jsonRequestBodyExample) {
-      exampleBodyString = JSON.stringify(jsonRequestBodyExample, null, 2);
+      exampleBodyString = JSON.stringify(
+        jsonRequestBodyExample.params,
+        null,
+        2
+      );
+      exampleBodyStringTemplate = JSON.stringify(
+        { ...jsonRequestBodyExample, params: templateKey },
+        null,
+        2
+      );
     }
     language = "json";
   }
@@ -220,12 +231,16 @@ function Body() {
     language = "xml";
   }
 
+  const onChange = (value) => {
+    setBody(exampleBodyStringTemplate.replace(`"${templateKey}"`, value));
+  };
+
   return (
     <FormItem label="Body">
       <VSCode
         value={exampleBodyString}
         language={language}
-        onChange={setBody}
+        onChange={onChange}
       />
     </FormItem>
   );

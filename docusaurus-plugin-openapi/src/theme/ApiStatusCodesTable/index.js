@@ -6,13 +6,17 @@ function StatusCodesTable({ responses }) {
   if (responses === undefined) {
     return null;
   }
+
   const codes = Object.keys(responses);
   if (codes.length === 0) {
     return null;
   }
 
   return (
-    <>
+    <details>
+      <summary>
+        <h3 style={{ display: "inline" }}>Response</h3>
+      </summary>
       <table style={{ display: "table" }}>
         <thead>
           <tr>
@@ -32,8 +36,9 @@ function StatusCodesTable({ responses }) {
                     </div>
                     <div>
                       <RequestBodyTable
-                        body={{ ...responses[code], description: '' }}
-                        title={responses[code].description} />
+                        body={{ ...responses[code], description: "" }}
+                        title={responses[code].description}
+                      />
                     </div>
                   </div>
                 </td>
@@ -42,7 +47,7 @@ function StatusCodesTable({ responses }) {
           })}
         </tbody>
       </table>
-    </>
+    </details>
   );
 }
 

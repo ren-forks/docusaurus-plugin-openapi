@@ -31,7 +31,8 @@ function MethodEndpoint() {
       <span style={{ color: colorForMethod(method) }}>
         {method.toUpperCase()}
       </span>{" "}
-      <span>{path.replace(/{([a-z0-9-_]+)}/gi, ":$1")}</span>
+      {/* <span>{path.replace(/{([a-z0-9-_]+)}/gi, ":$1")}</span> */}
+      <span>/</span>
     </pre>
   );
 }

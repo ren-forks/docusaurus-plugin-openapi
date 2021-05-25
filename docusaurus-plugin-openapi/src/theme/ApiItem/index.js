@@ -102,14 +102,17 @@ function ApiItem({ openapi, content: DescriptionContent }) {
                     <ParamsTable parameters={parameters} type="header" />
                     <ParamsTable parameters={parameters} type="cookie" />
 
-                    <RequestBodyTable body={requestBody} title={"Request Body"} />
+                    <RequestBodyTable
+                      body={requestBody}
+                      title={"Request Body"}
+                    />
 
                     <StatusCodesTable responses={responses} />
                   </div>
                 </article>
               </div>
             </div>
-            <div className="col col--5">
+            <div className="col col--7">
               <ApiDemoPanel item={openapi} />
             </div>
           </div>
